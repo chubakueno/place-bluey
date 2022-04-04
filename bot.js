@@ -242,7 +242,7 @@ async function attemptPlace(accessToken) {
     try {
         if (data.errors) {
             const error = data.errors[0];
-            if (error.extensions && error.extensions.nextAvailablePixelTimestamp) {
+            if (error.extensions && error.extensions.nextAvailablePixelTs) {
                 const nextPixel = error.extensions.nextAvailablePixelTs + 3000;
                 const nextPixelDate = new Date(nextPixel);
                 const delay = nextPixelDate.getTime() - Date.now();
@@ -256,6 +256,7 @@ async function attemptPlace(accessToken) {
                 }
 
                 console.error(`[!!] Fix this error, then restart the script to continue...`);
+                setTimeout(retry, 6*60*1000);
             }
         } else {
             const nextPixel = data.data.act.data[0].data.nextAvailablePixelTimestamp + 3000;
